@@ -4,7 +4,11 @@ Public Class Form1
     Dim y As Boolean = False
     Dim SR As StreamReader
     Dim SW As StreamWriter
-    Dim Chemin As String = "D:\Tally_Counter.txt"
+    Dim localAppDataPath As String = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
+
+    Dim AppFolder As String = Path.Combine(localAppDataPath, "Tally Counter")
+    Dim Chemin As String = Path.Combine(AppFolder, "Tally_Counter.txt")
+
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
         timer()
         x = 0
@@ -62,6 +66,10 @@ Public Class Form1
 
     Sub Enregistrer()
         Try
+            If Not Directory.Exists(AppFolder) Then
+                Directory.CreateDirectory(AppFolder)
+            End If
+
             SW = New StreamWriter(Chemin)
             SW.Write(x)
             SW.Close()
